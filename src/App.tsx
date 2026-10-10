@@ -47,13 +47,10 @@ function MainApp() {
     }
   });
 
-  // Theme state
+  // Theme state: por defecto modo claro (light) cálido y natural
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     try {
-      return (
-        localStorage.getItem('estadofit_theme') === 'dark' ||
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      );
+      return localStorage.getItem('estadofit_theme') === 'dark';
     } catch {
       return false;
     }
@@ -261,6 +258,8 @@ function MainApp() {
           <SplashScreen
             onEnterCatalog={handleEnterCatalog}
             onOpenQrModal={() => setIsQrModalOpen(true)}
+            isDarkMode={isDarkMode}
+            onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
           />
         </div>
       </div>

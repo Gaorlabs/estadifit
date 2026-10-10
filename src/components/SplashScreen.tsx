@@ -6,13 +6,17 @@ import {
   UtensilsCrossed,
   QrCode,
   ArrowRight,
-  Flame
+  Flame,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { OrderMode, CategoryId } from '../types';
 
 interface SplashScreenProps {
   onEnterCatalog: (mode: OrderMode, category?: CategoryId) => void;
   onOpenQrModal?: () => void;
+  isDarkMode?: boolean;
+  onToggleDarkMode?: () => void;
 }
 
 // Visual showcase of signature dishes for appetizing appeal (Solo informativo)
@@ -46,7 +50,12 @@ const SHOWCASE_ITEMS = [
   },
 ];
 
-export const SplashScreen: React.FC<SplashScreenProps> = ({ onEnterCatalog, onOpenQrModal }) => {
+export const SplashScreen: React.FC<SplashScreenProps> = ({
+  onEnterCatalog,
+  onOpenQrModal,
+  isDarkMode = false,
+  onToggleDarkMode,
+}) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   // Auto-rotate the showcase items every 3.5 seconds
@@ -67,13 +76,32 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onEnterCatalog, onOp
       <div className="absolute bottom-10 left-1/4 w-72 h-72 rounded-full bg-[#5b874b]/15 blur-3xl pointer-events-none" />
 
       {/* Top Header & Lively Animated Brand Identity */}
-      <div className="relative z-10 flex flex-col items-center text-center pt-2">
-        {/* Live operational badge */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 dark:bg-stone-800/95 border border-[#5b874b]/30 shadow-xs text-[11px] font-bold text-stone-700 dark:text-stone-200 mb-3 animate-pulse">
-          <span className="w-2 h-2 rounded-full bg-[#5b874b] animate-ping" />
-          <span className="text-[#4b773d] dark:text-[#78aa65]">● Atendiendo Hoy</span>
-          <span className="text-stone-300 dark:text-stone-600">·</span>
-          <span>Lima Metropolitana</span>
+      <div className="relative z-10 flex flex-col items-center text-center pt-1">
+        {/* Top utility row with Live badge & Theme Toggle */}
+        <div className="w-full flex items-center justify-between mb-3 px-1">
+          {/* Live operational badge */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 dark:bg-stone-800/95 border border-[#5b874b]/30 shadow-xs text-[11px] font-bold text-stone-700 dark:text-stone-200 animate-pulse">
+            <span className="w-2 h-2 rounded-full bg-[#5b874b] animate-ping" />
+            <span className="text-[#4b773d] dark:text-[#78aa65]">● Atendiendo Hoy</span>
+            <span className="text-stone-300 dark:text-stone-600">·</span>
+            <span>Lima</span>
+          </div>
+
+          {/* Theme switch button */}
+          {onToggleDarkMode && (
+            <button
+              onClick={onToggleDarkMode}
+              className="p-1.5 rounded-full bg-white/90 dark:bg-stone-800/90 border border-stone-200/80 dark:border-stone-700 shadow-xs text-stone-600 dark:text-stone-300 hover:text-[#5b874b] transition-all cursor-pointer active:scale-95"
+              title={isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              aria-label="Alternar tema de color"
+            >
+              {isDarkMode ? (
+                <Sun className="w-4 h-4 text-amber-500 fill-amber-500" />
+              ) : (
+                <Moon className="w-4 h-4 text-stone-600" />
+              )}
+            </button>
+          )}
         </div>
 
         {/* Brand Icon with lively animation, floating effect and glow */}
